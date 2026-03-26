@@ -10,6 +10,9 @@ class ProductionWorkshop:
         self.warehouse = warehouse
 
     def pasteurize_milk(self, volume: float):
+        if volume != int(volume):
+            raise ValueError("На заводе только литровые бутылки. Объём должен быть целым числом.")
+        
         milk = self.milk_tank.get_milk(volume)
         milk.pasteurize()
         return milk
@@ -18,6 +21,9 @@ class ProductionWorkshop:
         self.milk_tank.fill(milk)
 
     def make_yogurt(self, volume: float, flavour: str):
+        if round(volume / 0.2) * 0.2 != round(volume, 10):
+            raise ValueError("Есть только стаканчики 0.2. Объём должен быть кратен 0.2.")
+        
         milk_needed = volume * 1.1
         milk = self.milk_tank.get_milk(milk_needed)
         return Yogurt(volume, flavour, milk.fat_content)
