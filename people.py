@@ -36,7 +36,6 @@ class Player:
             self.handle_yogurt(order, item["quantity"], flavour)
 
     def process_order(self, order: Order, order_queue : OrderQueue):
-        # Создаём резервную копию состояния склада и заказанных товаров
         warehouse_backup = copy.deepcopy(self.warehouse.products_in_warehouse)
         order_backup = copy.deepcopy(order.ready_products)
 
@@ -45,7 +44,6 @@ class Player:
                 self.process_item(order, item)
         except Exception as e:
             print(f"Ошибка при выполнении заказа для {order.customer.name}: {e}")
-            # Откат: восстанавливаем склад и готовые продукты заказа
             self.warehouse.products_in_warehouse = warehouse_backup
             order.ready_products = order_backup
             order_queue.return_to_front(order)
